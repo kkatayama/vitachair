@@ -1,6 +1,7 @@
 from bottle import Bottle, route, request, run, template, static_file, debug, response, redirect
-from rich import print
+from rich import print, inspect
 from pathlib import Path
+import json
 import sys
 import os
 
@@ -33,9 +34,28 @@ def index():
 
 @app.route('/savedata', method=["POST"])
 def savedata():
+    # print(inspect(request.body))
+    print(f'\t[magenta]query: {request.query.__dict__}')
+    # print(f'\t[yellow]body: {request.body.__dict__}')
 
-    data = request.forms.get('data')
-    filename = request.forms.get('filename')
+    if request.json:
+        print(f'\t[green]json: {request.json}')
+        data = request.json.get('data')
+        filename = request.json.get('filename')
+    elif request.forms.get('data'):
+        print(f'\t[cyan]forms: {dict(request.forms)}')
+        data = request.forms.get('data')
+        filename = request.forms.get('filename')
+    else:
+        # -- deal with funky data
+        params = json.loads(list(request.params.keys())[0])
+        print(f'\t[blue]params: {params}')
+        data = params.get('data')
+        filename = params.get('filename')
+
+    print(f'[red]data = {data}')
+    print(f'[red]filename = {filename}')
+
     savepath = Path('data', filename)
     d = f'{data}'.replace('\\n', '\n')
 
