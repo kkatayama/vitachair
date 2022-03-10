@@ -50,6 +50,8 @@ def savedata():
             params = request.files.get("data")
             print(f'[pink]FILES: {params.__dict__}')
             data = params.__dict__.get("file").read()
+            if not isinstance(data, str):
+                data = data.decode()
             filename = params.__dict__.get("filename")
     elif request.forms:
         print(f'\t[cyan]forms: {dict(request.forms)}')
@@ -67,7 +69,7 @@ def savedata():
         data = params.get('data')
         filename = params.get('filename')
 
-    data = bytes(data).decode('utf-8')
+    # data = bytes(data).decode('utf-8')
     print(f'[red]data = {data}')
     print(f'[red]filename = {filename}')
 
