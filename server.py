@@ -49,7 +49,7 @@ def savedata():
         with open(savepath, 'wb') as f:
             f.write(d)
 
-    response = f'file saved: {savepath}'
+    response = f'file saved: https://vitachair.hopto.org/{savepath}'
     print(response)
     return response
 
