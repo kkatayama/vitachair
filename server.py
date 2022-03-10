@@ -67,6 +67,7 @@ def savedata():
         data = params.get('data')
         filename = params.get('filename')
 
+    data = bytes(data).decode('utf-8')
     print(f'[red]data = {data}')
     print(f'[red]filename = {filename}')
 
