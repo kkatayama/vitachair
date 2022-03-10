@@ -46,6 +46,10 @@ def savedata():
         print(f'\t[cyan]forms: {dict(request.forms)}')
         data = request.forms.get('data')
         filename = request.forms.get('filename')
+    elif request.files:
+        print(f'\t[yellow]files: {dict(request.files)}')
+        data = request.files.get('data')
+        filename = request.files.get('filename')
     else:
         # -- deal with funky data
         params = json.loads(list(request.params.keys())[0])
