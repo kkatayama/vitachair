@@ -42,14 +42,24 @@ def savedata():
         print(f'\t[green]json: {request.json}')
         data = request.json.get('data')
         filename = request.json.get('filename')
-    elif request.forms.get('data'):
-        print(f'\t[cyan]forms: {dict(request.forms)}')
-        data = request.forms.get('data')
-        filename = request.forms.get('filename')
     elif request.files:
-        print(f'\t[yellow]files: {dict(request.files)}')
+        print(f'\t[yellow]files: {inspect(request.files.get("data"))}')
         data = request.files.get('data')
         filename = request.files.get('filename')
+        if not filename:
+            params = request.files.get("data")
+            print(f'[pink]FILES: {params.__dict__}')
+            data = params.__dict__.get("file").read()
+            filename = params.__dict__.get("filename")
+    elif request.forms:
+        print(f'\t[cyan]forms: {dict(request.forms)}')
+        if not list(request.forms.values())[0]:
+            forms = json.loads(list(request.forms.keys())[0])
+            print(f'\t[green]{forms}')
+        else:
+            forms = request.forms
+        data = forms.get('data')
+        filename = forms.get('filename')
     else:
         # -- deal with funky data
         params = json.loads(list(request.params.keys())[0])
@@ -66,7 +76,7 @@ def savedata():
     print(repr(data))
     print(repr(d))
 
-    if isinstance(data, str):
+    if isinstance(d, str):
         with open(savepath, 'w') as f:
             f.write(d)
     else:
