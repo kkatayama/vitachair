@@ -1,0 +1,12 @@
+[Unit]
+Description=vitachair Web Framework
+After=network.target
+
+[Service]
+User=katayama
+WorkingDirectory=/home/katayama/Documents/vitachair
+ExecStart=/usr/bin/python3 server.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
